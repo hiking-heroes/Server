@@ -23,6 +23,9 @@ class User(UserMixin, db.Model):
                              lazy='dynamic',
                              cascade='all, delete-orphan')
 
+    def __init__(self, **kwargs):
+        super(User, self).__init__(**kwargs)
+
 
 class Event(db.Model):
     __tablename__ = "events"
@@ -30,8 +33,3 @@ class Event(db.Model):
     container = db.Column(db.String(10), nullable=False)
     naviaddress = db.Column(db.String(20), nullable=False, unique=True)
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
-    members = db.relationship('Participant',
-                              foreign_keys=[Participant.user_id],
-                              backref=db.backref('events', lazy='joined'),
-                              lazy='dynamic',
-                              cascade='all, delete-orphan')

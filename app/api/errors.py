@@ -21,6 +21,12 @@ def forbidden(message):
     return response
 
 
+def conflict(message):
+    response = jsonify({'error': 'conflict', 'message': message})
+    response.status_code = 409
+    return response
+
+
 @api.errorhandler(ValidationError)
 def validation_error(e):
     return bad_request(e.args[0])
