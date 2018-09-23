@@ -8,7 +8,7 @@ from .errors import bad_request, conflict
 
 
 def is_ready_for_reg(json: dict) -> bool:
-    required = ("Email", "password", "first_name", "last_name")
+    required = ("email", "password", "first_name", "last_name")
     return all([k in required for k in json.keys()])
 
 
