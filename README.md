@@ -42,23 +42,24 @@
   **{}->** Answer:
   ```
   {
+      'guest': bool, 
+      'id': int, 
       'email': str, 
       'first_name': str, 
+      'last_name': str, 
+      'token': str,
       'gdpr_is_collect_analytic_data': bool, 
       'gdpr_is_receive_newsletter': bool, 
       'gdpr_is_restrict_user_data': bool, 
-      'guest': bool, 
-      'id': int, 
       'is_confirmed': bool, 
       'is_nps_sent': bool, 
-      'last_name': str, 
       'nps': int, 
       'permissions': 
           {
               'event_addresses_limit': int, 
               'free_addresses_limit': int
           }, 
-      'token': str
+      'events': list
   }
   ```
 
@@ -75,23 +76,24 @@
   **{}->** Answer:
   ```
   {
+      'guest': bool, 
+      'id': int, 
       'email': str, 
       'first_name': str, 
+      'last_name': str, 
+      'token': str,
       'gdpr_is_collect_analytic_data': bool, 
       'gdpr_is_receive_newsletter': bool, 
       'gdpr_is_restrict_user_data': bool, 
-      'guest': bool, 
-      'id': int, 
       'is_confirmed': bool, 
       'is_nps_sent': bool, 
-      'last_name': str, 
       'nps': int, 
       'permissions': 
           {
               'event_addresses_limit': int, 
               'free_addresses_limit': int
           }, 
-      'token': str
+      'events': list
   }
   ```
 

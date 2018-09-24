@@ -61,7 +61,7 @@ def check_user():
     db.session.add(user)
     db.session.commit()
 
-    # TODO: add user's events
+    navi_user["events"] = []
 
     return jsonify(navi_user)
 
