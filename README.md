@@ -5,7 +5,7 @@
 Доступ к API производится по адресу `https://bigcitylife.pythonanywhere.com/api/v1`
 
 ### Test
-* *Тестовый метод для проверки*
+#### *Тестовый метод для проверки*
   > **[GET], [POST], [PUT], [DELETE]** `/test`
   
   **?..&..** Required args:
