@@ -14,7 +14,8 @@ class Participant(db.Model):
 class User(UserMixin, db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
-    navi_token = db.Column(db.String(36), nullable=False, unique=True)
+    email = db.Column(db.String(50), nullable=False, unique=True)
+    navi_token = db.Column(db.String(36), nullable=False)
     own_events = db.relationship("Event", backref="owner",
                                      lazy="dynamic")
     events = db.relationship('Participant',

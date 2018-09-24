@@ -7,13 +7,17 @@ errors = {
     400: 'bad request',
     401: 'unauthorized',
     403: 'forbidden',
+    404: 'not found',
     409: 'conflict',
     500: 'internal server error'
 }
 
 
 def abort_json(code: int, message: str):
-    response = jsonify({'error': errors[code], 'message': message})
+    response = jsonify({
+        'error': errors.get(code, 'unexpected error'),
+        'message': message
+    })
     response.status_code = code
     return response
 

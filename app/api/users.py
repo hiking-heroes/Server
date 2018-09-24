@@ -21,7 +21,7 @@ def create_user():
 
     navi_data = na.post_req("/profile", request.json)
     if navi_data.status_code != 200:
-        return abort_json(navi_data.status_code, navi_data.content)
+        return abort_json(navi_data.status_code, navi_data.text)
 
     navi_user = navi_data.json()
 
@@ -39,7 +39,7 @@ def check_user():
 
     navi_data = na.post_req("/profile/check", request.json)
     if navi_data.status_code != 200:
-        return abort_json(navi_data.status_code, navi_data.content)
+        return abort_json(navi_data.status_code, navi_data.text)
 
     navi_user = navi_data.json()
 
