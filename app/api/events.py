@@ -10,7 +10,7 @@ def get_event(id):
     return jsonify(event.to_json())
 
 
-@api.route('/events/', methods=['POST'])
+@api.route('/events', methods=['POST'])
 def create_event():
     return jsonify({}), 201
 

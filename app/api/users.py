@@ -12,7 +12,7 @@ def is_ready_for_reg(json: dict) -> bool:
     return all([k in required for k in json.keys()])
 
 
-@api.route('/users/', methods=['POST'])
+@api.route('/users', methods=['POST'])
 def create_user():
     if not request.json or not is_ready_for_reg(request.json):
         return bad_request("Not all required parameters are passed")

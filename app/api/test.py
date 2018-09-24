@@ -1,4 +1,4 @@
-from flask import jsonify, request, abort
+from flask import jsonify, request
 
 from . import api
 
