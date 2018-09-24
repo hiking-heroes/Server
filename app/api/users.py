@@ -1,28 +1,27 @@
-from flask import jsonify, request, abort
+from flask import jsonify, request
 
 from . import api
 from ..models import User
 from .. import naviaddress as na
 from .. import db
-from .errors import bad_request, conflict
+from .errors import abort_json
 
 
-def is_ready_for_reg(json: dict) -> bool:
-    required = ("email", "password", "first_name", "last_name")
+def is_ready_for(json: dict, is_reg=False) -> bool:
+    required = ["email", "password"]
+    if is_reg == "reg":
+        required.extend(["first_name", "last_name"])
     return all([k in required for k in json.keys()])
 
 
 @api.route('/users', methods=['POST'])
 def create_user():
-    if not request.json or not is_ready_for_reg(request.json):
-        return bad_request("Not all required parameters are passed")
+    if not request.json or not is_ready_for(request.json, is_reg=True):
+        return abort_json(400, "Not all required parameters are passed")
 
-    navi_data = na.create_user_profile(request.json)
+    navi_data = na.post_req("/profile", request.json)
     if navi_data.status_code != 200:
-        if navi_data.status_code == 409:
-            return conflict(str(navi_data.content))
-        else:
-            abort(navi_data.status_code)
+        return abort_json(navi_data.status_code, navi_data.content)
 
     navi_user = navi_data.json()
 
@@ -31,6 +30,22 @@ def create_user():
     db.session.commit()
 
     return jsonify(navi_user), 201
+
+
+@api.route('/users/check', methods=['POST'])
+def check_user():
+    if not request.json or is_ready_for(request.json):
+        return abort_json(400, "Not all required parameters are passed")
+
+    navi_data = na.post_req("/profile/check", request.json)
+    if navi_data.status_code != 200:
+        return abort_json(navi_data.status_code, navi_data.content)
+
+    navi_user = navi_data.json()
+
+    # TODO: add some data here
+
+    return jsonify(navi_user)
 
 
 @api.route('/users/<int:id>', methods=['PUT'])

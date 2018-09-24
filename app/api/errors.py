@@ -3,30 +3,21 @@ from app.exceptions import ValidationError
 from . import api
 
 
-def bad_request(message):
-    response = jsonify({'error': 'bad request', 'message': message})
-    response.status_code = 400
-    return response
+errors = {
+    400: 'bad request',
+    401: 'unauthorized',
+    403: 'forbidden',
+    409: 'conflict',
+    500: 'internal server error'
+}
 
 
-def unauthorized(message):
-    response = jsonify({'error': 'unauthorized', 'message': message})
-    response.status_code = 401
-    return response
-
-
-def forbidden(message):
-    response = jsonify({'error': 'forbidden', 'message': message})
-    response.status_code = 403
-    return response
-
-
-def conflict(message):
-    response = jsonify({'error': 'conflict', 'message': message})
-    response.status_code = 409
+def abort_json(code: int, message: str):
+    response = jsonify({'error': errors[code], 'message': message})
+    response.status_code = code
     return response
 
 
 @api.errorhandler(ValidationError)
 def validation_error(e):
-    return bad_request(e.args[0])
+    return abort_json(400, e.args[0])
