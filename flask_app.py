@@ -8,6 +8,7 @@ if os.path.exists(dotenv_path):
 COV = None
 if os.environ.get('FLASK_COVERAGE'):
     import coverage
+
     COV = coverage.coverage(branch=True, include='app/*')
     COV.start()
 
@@ -16,7 +17,6 @@ import click
 from flask_migrate import Migrate, upgrade
 from app import create_app, db
 from app.models import User, Event, Participant
-
 
 app = create_app(os.getenv('FLASK_CONFIG') or 'default')
 migrate = Migrate(app, db)

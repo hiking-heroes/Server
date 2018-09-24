@@ -3,7 +3,6 @@ from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from config import config
 
-
 bootstrap = Bootstrap()
 db = SQLAlchemy()
 
@@ -27,5 +26,6 @@ def create_app(config_name):
     app.register_blueprint(api_blueprint, url_prefix='/api/v1')
 
     return app
+
 
 from . import models

@@ -5,4 +5,6 @@ from . import api
 
 @api.route("/help")
 def help_api():
-    return redirect("https://github.com/hiking-heroes/Server/blob/master/README.md")
+    return redirect(
+        "https://github.com/hiking-heroes/Server/blob/master/README.md"
+    )

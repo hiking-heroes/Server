@@ -2,7 +2,6 @@ from flask import jsonify
 from app.exceptions import ValidationError
 from . import api
 
-
 errors = {
     400: 'bad request',
     401: 'unauthorized',
