@@ -33,3 +33,11 @@ class Event(db.Model):
     container = db.Column(db.String(10), nullable=False)
     naviaddress = db.Column(db.String(20), nullable=False, unique=True)
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+    def to_json(self):
+        return {
+            "id": self.id,
+            "container": self.container,
+            "naviaddress": self.naviaddress,
+            "owner_id": self.owner_id
+        }
