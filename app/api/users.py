@@ -25,7 +25,11 @@ def create_user():
 
     navi_user = navi_data.json()
 
-    user = User(id=navi_user["id"], navi_token=navi_user["token"])
+    user = User(
+        id=navi_user["id"],
+        email=navi_user["email"],
+        navi_token=navi_user["token"]
+    )
     db.session.add(user)
     db.session.commit()
 
