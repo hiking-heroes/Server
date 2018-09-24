@@ -13,6 +13,7 @@
 
 ### Test
 #### *Тестовый метод для проверки*
+* [Оглавление](#Оглавление)
   > **[GET], [POST], [PUT], [DELETE]** `/test`
   
   **?..&..** Required args:
@@ -35,6 +36,7 @@
 
 ### Users
 #### Sign Up (Создать нового пользователя в NaviAddress)  
+* [Оглавление](#Оглавление)
   > **[POST]** `/users/signup`
   
   **<-{}** Required data:
@@ -71,6 +73,7 @@
   ```
 
 #### Sign In  
+* [Оглавление](#Оглавление)
   > **[POST]** `/users/signin`
   
   **<-{}** Required data:
