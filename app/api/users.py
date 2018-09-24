@@ -14,8 +14,9 @@ def is_ready_for(json: dict, is_reg=False) -> bool:
     return all([k.lower() in required for k in json.keys()])
 
 
-@api.route('/users', methods=['POST'])
+@api.route('/users/signup', methods=['POST'])
 def create_user():
+    """SIGN UP"""
     if not request.json or not is_ready_for(request.json, is_reg=True):
         return abort_json(400, "Not all required parameters are passed")
 
@@ -36,18 +37,31 @@ def create_user():
     return jsonify(navi_user), 201
 
 
-@api.route('/users/check', methods=['POST'])
+@api.route('/users/signin', methods=['POST'])
 def check_user():
-    if not request.json or is_ready_for(request.json):
+    """SIGN IN"""
+    if not request.json or not is_ready_for(request.json):
         return abort_json(400, "Not all required parameters are passed")
 
-    navi_data = na.post_req("/profile/check", request.json)
+    navi_data = na.post_req("/sessions", request.json)
     if navi_data.status_code != 200:
         return abort_json(navi_data.status_code, navi_data.text)
 
     navi_user = navi_data.json()
 
-    # TODO: add some data here
+    user = User.query.get(navi_user["id"])
+    if user:
+        user.navi_token = navi_user["token"]
+    else:
+        user = User(
+            id=navi_user["id"],
+            email=navi_user["email"],
+            navi_token=navi_user["token"]
+        )
+    db.session.add(user)
+    db.session.commit()
+
+    # TODO: add user's events
 
     return jsonify(navi_user)
 
