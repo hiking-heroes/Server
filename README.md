@@ -4,6 +4,13 @@
 
 Доступ к API производится по адресу `https://bigcitylife.pythonanywhere.com/api/v1`
 
+## Оглавление
+* [Test](#test)
+  * [Тестовый метод для проверки](#Тестовый-метод-для-проверки)
+* [Users](#users)
+  * [Sign Up](#sign-up-Создать-нового-пользователя-в-naviaddress)
+  * [Sign In](#sign-in)
+
 ### Test
 #### *Тестовый метод для проверки*
   > **[GET], [POST], [PUT], [DELETE]** `/test`
