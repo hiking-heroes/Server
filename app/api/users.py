@@ -9,9 +9,9 @@ from .errors import abort_json
 
 def is_ready_for(json: dict, is_reg=False) -> bool:
     required = ["email", "password"]
-    if is_reg == "reg":
+    if is_reg:
         required.extend(["first_name", "last_name"])
-    return all([k in required for k in json.keys()])
+    return all([k.lower() in required for k in json.keys()])
 
 
 @api.route('/users', methods=['POST'])
