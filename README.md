@@ -23,7 +23,7 @@
       'received_args': <ARGS: dict>,
       'received_headers': <HEADERS: dict>,
       'received_json': <DATA: dict>
-   }
+  }
    ```
 
 ### Users
