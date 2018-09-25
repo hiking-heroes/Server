@@ -22,4 +22,4 @@ def get_events_for_square():
     events = Event.get_for_square(
         *get_square_from_args(request.args), request.args.get("type") or "any"
     )
-    return jsonify([e.to_json() for e in events])
+    return jsonify({"events": [e.to_json() for e in events]})

@@ -29,10 +29,10 @@
   **{}->** Answer:
   ```
   {
-      'result': True,
-      'received_args': <ARGS: dict>,
-      'received_headers': <HEADERS: dict>,
-      'received_json': <DATA: dict>
+    'result': True,
+    'received_args': <ARGS: dict>,
+    'received_headers': <HEADERS: dict>,
+    'received_json': <DATA: dict>
   }
    ```
 
@@ -44,33 +44,33 @@
   **<-{}** Required data:
   ```
   {
-      'email': str(50),
-      'password': str,
-      'first_name': str,
-      'last_name': str
+    'email': str(50),
+    'password': str,
+    'first_name': str,
+    'last_name': str
   }
   ```
   **{}->** Answer:
   ```
   {
-      'guest': bool, 
-      'id': int, 
-      'email': str, 
-      'first_name': str, 
-      'last_name': str, 
-      'token': str,
-      'gdpr_is_collect_analytic_data': bool, 
-      'gdpr_is_receive_newsletter': bool, 
-      'gdpr_is_restrict_user_data': bool, 
-      'is_confirmed': bool, 
-      'is_nps_sent': bool, 
-      'nps': int, 
-      'permissions': 
-          {
-              'event_addresses_limit': int, 
-              'free_addresses_limit': int
-          }, 
-      'events': list        - список будущих ивентов
+    'guest': bool, 
+    'id': int, 
+    'email': str, 
+    'first_name': str, 
+    'last_name': str, 
+    'token': str,
+    'gdpr_is_collect_analytic_data': bool, 
+    'gdpr_is_receive_newsletter': bool, 
+    'gdpr_is_restrict_user_data': bool, 
+    'is_confirmed': bool, 
+    'is_nps_sent': bool, 
+    'nps': int, 
+    'permissions': 
+      {
+        'event_addresses_limit': int, 
+        'free_addresses_limit': int
+      }, 
+    'events': list          - список будущих ивентов
   }
   ```
 
@@ -81,31 +81,31 @@
   **<-{}** Required data:
   ```
   {
-      'email': str(50),
-      'password': str
+    'email': str(50),
+    'password': str
   }
   ```
   **{}->** Answer:
   ```
   {
-      'guest': bool, 
-      'id': int, 
-      'email': str, 
-      'first_name': str, 
-      'last_name': str, 
-      'token': str,
-      'gdpr_is_collect_analytic_data': bool, 
-      'gdpr_is_receive_newsletter': bool, 
-      'gdpr_is_restrict_user_data': bool, 
-      'is_confirmed': bool, 
-      'is_nps_sent': bool, 
-      'nps': int, 
-      'permissions': 
-          {
-              'event_addresses_limit': int, 
-              'free_addresses_limit': int
-          }, 
-      'events': list        - список будущих ивентов
+    'guest': bool, 
+    'id': int, 
+    'email': str, 
+    'first_name': str, 
+    'last_name': str, 
+    'token': str,
+    'gdpr_is_collect_analytic_data': bool, 
+    'gdpr_is_receive_newsletter': bool, 
+    'gdpr_is_restrict_user_data': bool, 
+    'is_confirmed': bool, 
+    'is_nps_sent': bool, 
+    'nps': int, 
+    'permissions': 
+      {
+        'event_addresses_limit': int, 
+        'free_addresses_limit': int
+      }, 
+    'events': list          - список будущих ивентов
   }
   ```
 
@@ -128,12 +128,17 @@
   **{}->** Answer:
   ```
   {
-      "id": int,
-      "container": str,
-      "naviaddress": str,
-      "owner_id": int,
-      "latitude": float,
-      "longitude": float,
-      "type": str
+    "events": [
+      {
+        "id": int,
+        "container": str,
+        "naviaddress": str,
+        "owner_id": int,
+        "latitude": float,
+        "longitude": float,
+        "type": str
+      },
+      ...
+    ]
   }
   ```
