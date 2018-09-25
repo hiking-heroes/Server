@@ -28,6 +28,9 @@ class User(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
 
+    def get_events(self) -> list:
+        return [e.to_json() for e in self.events.all()]
+
 
 class Event(db.Model):
     __tablename__ = "events"

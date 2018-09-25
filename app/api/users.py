@@ -34,6 +34,8 @@ def create_user():
     db.session.add(user)
     db.session.commit()
 
+    navi_user["events"] = []
+
     return jsonify(navi_user), 201
 
 
@@ -61,7 +63,7 @@ def check_user():
     db.session.add(user)
     db.session.commit()
 
-    navi_user["events"] = []
+    navi_user["events"] = user.get_events()
 
     return jsonify(navi_user)
 
