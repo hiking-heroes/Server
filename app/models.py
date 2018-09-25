@@ -33,7 +33,19 @@ class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     container = db.Column(db.String(10), nullable=False)
     naviaddress = db.Column(db.String(20), nullable=False, unique=True)
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    type = db.Column(db.String(25), index=True, default="no type")
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+    @staticmethod
+    def get_for_square(lt_lat, lt_lng, rb_lat, rb_lng):
+        return Event.query.filter(
+            Event.latitude > lt_lat,
+            Event.longitude > lt_lng,
+            Event.latitude < rb_lat,
+            Event.longitude < rb_lng
+        ).all()
 
     def to_json(self):
         return {
