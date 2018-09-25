@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
                                  lazy="dynamic")
     events = db.relationship('Participant',
                              foreign_keys=[Participant.user_id],
-                             backref=db.backref('members', lazy='joined'),
+                             backref=db.backref('participants', lazy='joined'),
                              lazy='dynamic',
                              cascade='all, delete-orphan')
 
@@ -49,8 +49,8 @@ class Event(db.Model):
             event_type == "any" or Event.type == event_type
         ).all()
 
-    def to_json(self):
-        return {
+    def to_json(self, navi: dict = None) -> dict:
+        response = {
             "id": self.id,
             "container": self.container,
             "naviaddress": self.naviaddress,
@@ -59,3 +59,7 @@ class Event(db.Model):
             "longitude": self.longitude,
             "type": self.type
         }
+        if navi:
+            response["navi"] = navi
+
+        return response
