@@ -18,7 +18,7 @@ def get_square_from_args(json: dict) -> tuple:
 @api.route("/events", methods=["GET"])
 def get_events_for_square():
     if not request.args or not is_square(request.args):
-        abort_json(400, "Not all required arguments are passed")
+        return abort_json(400, "Not all required arguments are passed")
 
     events = Event.get_for_square(
         *get_square_from_args(request.args), request.args.get("type") or "any"
@@ -30,7 +30,7 @@ def get_events_for_square():
 def get_event(id):
     event = Event.query.get(id)
     if not event:
-        abort_json(404, "Event not found")
+        return abort_json(404, "Event not found")
 
     navi_data = na.get_req(
         "/addresses/{0}/{1}".format(event.container, event.naviaddress)
