@@ -1,5 +1,5 @@
 # Server
-
+[![CodeFactor](https://www.codefactor.io/repository/github/hiking-heroes/server/badge)](https://www.codefactor.io/repository/github/hiking-heroes/server)
 ## Документация API
 
 Доступ к API производится по адресу `https://bigcitylife.pythonanywhere.com/api/v1`
