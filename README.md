@@ -10,6 +10,8 @@
 * [Users](#users)
   * [Sign Up](#sign-up-Создать-нового-пользователя-в-naviaddress)
   * [Sign In](#sign-in)
+* [Map](#map)
+  * [Получить список ивентов для карты](#Получить-список-ивентов-для-карты)
 
 ### Test
 #### *Тестовый метод для проверки*
@@ -68,7 +70,7 @@
               'event_addresses_limit': int, 
               'free_addresses_limit': int
           }, 
-      'events': list
+      'events': list        - список будущих ивентов
   }
   ```
 
@@ -103,7 +105,35 @@
               'event_addresses_limit': int, 
               'free_addresses_limit': int
           }, 
-      'events': list
+      'events': list        - список будущих ивентов
   }
   ```
 
+### Map
+#### Получить список ивентов для карты
+* [Оглавление](#Оглавление)
+  > **[GET]** `/map`
+  
+  **?..&..** Required args:
+  ```
+  ? lt_lat=float            - широта левой нижней точки
+  & lt_lng=float            - долгота левой нижней точки
+  & rb_lat=float            - широта правой верхней точки
+  & rb_lng=float            - долгота правой верхней точки
+  ```
+  **?..&..** Optional args:
+  ```
+  & type=str                - тип ивента
+  ```
+  **{}->** Answer:
+  ```
+  {
+      "id": int,
+      "container": str,
+      "naviaddress": str,
+      "owner_id": int,
+      "latitude": float,
+      "longitude": float,
+      "type": str
+  }
+  ```

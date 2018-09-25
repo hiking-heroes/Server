@@ -1,4 +1,5 @@
 from flask_login import UserMixin
+
 from . import db
 
 
@@ -39,12 +40,13 @@ class Event(db.Model):
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
     @staticmethod
-    def get_for_square(lt_lat, lt_lng, rb_lat, rb_lng):
+    def get_for_square(lt_lat, lt_lng, rb_lat, rb_lng, event_type):
         return Event.query.filter(
             Event.latitude > lt_lat,
             Event.longitude > lt_lng,
             Event.latitude < rb_lat,
-            Event.longitude < rb_lng
+            Event.longitude < rb_lng,
+            event_type == "any" or Event.type == event_type
         ).all()
 
     def to_json(self):
@@ -52,5 +54,8 @@ class Event(db.Model):
             "id": self.id,
             "container": self.container,
             "naviaddress": self.naviaddress,
-            "owner_id": self.owner_id
+            "owner_id": self.owner_id,
+            "latitude": self.latitude,
+            "longitude": self.longitude,
+            "type": self.type
         }
