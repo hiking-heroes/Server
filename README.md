@@ -15,7 +15,7 @@
   * [Получить иформацию по ивенту](#Получить-иформацию-по-ивенту)
 
 ### Test
-#### *Тестовый метод для проверки*
+#### Тестовый метод для проверки
 * [Оглавление](#Оглавление)
   > **[GET], [POST], [PUT], [DELETE]** `/test`
   
@@ -71,7 +71,7 @@
         'event_addresses_limit': int, 
         'free_addresses_limit': int
       }, 
-    'events': list          - список будущих ивентов
+    'events': []            - список будущих ивентов (пустой)
   }
   ```
 
@@ -106,7 +106,18 @@
         'event_addresses_limit': int, 
         'free_addresses_limit': int
       }, 
-    'events': list          - список будущих ивентов
+    'events': [             - список будущих ивентов
+      {
+        'id': int,
+        'container': str,
+        'naviaddress': str,
+        'owner_id': int,
+        'latitude': float,
+        'longitude': float,
+        'type': str
+      },
+      ...
+    ]
   }
   ```
 
@@ -129,15 +140,15 @@
   **{}->** Answer:
   ```
   {
-    "events": [
+    'events': [
       {
-        "id": int,
-        "container": str,
-        "naviaddress": str,
-        "owner_id": int,
-        "latitude": float,
-        "longitude": float,
-        "type": str
+        'id': int,
+        'container': str,
+        'naviaddress': str,
+        'owner_id': int,
+        'latitude': float,
+        'longitude': float,
+        'type': str
       },
       ...
     ]
@@ -151,97 +162,92 @@
   **{}->** Answer:
   ```
   {
-    "events": [
-      {
-        "id": int,
-        "container": str,
-        "naviaddress": str,
-        "owner_id": int,
-        "latitude": float,
-        "longitude": float,
-        "type": str,
-        "navi" : {
-          "name": str,
-          "description": str,
-          "booking": {
-            "website": str,
-            "caption": str,
-            "telephone": str
-          },
-          "naviaddress": str,
-          "container": str,
-          "point": {
-            "lat": int,
-            "lng": int
-          },
-          "contacts": [
-            {
-              "type": str,
-              "value": str
-            },
-            ...
-          ],
-          "event_start": datetime,
-          "event_end": datetime,
-          "address_description": {
-            "floor": str,
-            "building": str,
-            "apartment": str,
-            "intercom": str,
-            "isoffice": bool
-          },
-          "last_mile": {
-            "text": str,
-            "type": str,
-            "steps": [
-              {
-                "text": str,
-                "image": str,
-                "image_uuid": str
-              },
-              ...
-            ]
-          },
-          "postal_address": str,
-          "cover": [
-            {
-              "image_uuid": str,
-              "image": str
-            },
-            ...
-          ],
-          "sharable_cover": [
-            {
-              "image_uuid": str,
-              "image": str
-            },
-            ...
-          ],
-          "working_hours": [
-            {
-              "open_time": str,
-              "close_time": str,
-              "break_start_time": str,
-              "break_end_time": str,
-              "days": [
-                str,
-                ...
-              ]
-            },
-            ...
-          ],
-          "map_visibility": bool,
-          "category": {
-            "id": int,
-            "dbid": str,
-            "name": str,
-            "additional_name": str
-          },
-          "default_lang": str,
-          "lang": str
-        }
+    'id': int,
+    'container': str,
+    'naviaddress': str,
+    'owner_id': int,
+    'latitude': float,
+    'longitude': float,
+    'type': str,
+    'navi' : {
+      'name': str,
+      'description': str,
+      'booking': {
+        'website': str,
+        'caption': str,
+        'telephone': str
       },
-      ...
-    ]
+      'naviaddress': str,
+      'container': str,
+      'point': {
+        'lat': int,
+        'lng': int
+      },
+      'contacts': [
+        {
+          'type': str,
+          'value': str
+        },
+        ...
+      ],
+      'event_start': datetime,
+      'event_end': datetime,
+      'address_description': {
+        'floor': str,
+        'building': str,
+        'apartment': str,
+        'intercom': str,
+        'isoffice': bool
+      },
+      'last_mile': {
+        'text': str,
+        'type': str,
+        'steps': [
+          {
+            'text': str,
+            'image': str,
+            'image_uuid': str
+          },
+          ...
+        ]
+      },
+      'postal_address': str,
+      'cover': [
+        {
+          'image_uuid': str,
+          'image': str
+        },
+        ...
+      ],
+      'sharable_cover': [
+        {
+          'image_uuid': str,
+          'image': str
+        },
+        ...
+      ],
+      'working_hours': [
+        {
+          'open_time': str,
+          'close_time': str,
+          'break_start_time': str,
+          'break_end_time': str,
+          'days': [
+            str,
+            ...
+          ]
+        },
+        ...
+      ],
+      'map_visibility': bool,
+      'category': {
+        'id': int,
+        'dbid': str,
+        'name': str,
+        'additional_name': str
+      },
+      'default_lang': str,
+      'lang': str
+    }
   }
   ```
