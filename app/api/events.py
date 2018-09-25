@@ -8,7 +8,7 @@ from .. import naviaddress as na
 
 def is_square(json: dict) -> bool:
     required = ("lt_lat", "lt_lng", "rb_lat", "rb_lng")
-    return all([k.lower() in required for k in json])
+    return all([json.get(r) for r in required])
 
 
 def get_square_from_args(json: dict) -> tuple:

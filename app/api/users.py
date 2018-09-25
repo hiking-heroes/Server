@@ -11,7 +11,7 @@ def is_ready_for(json: dict, is_reg=False) -> bool:
     required = ["email", "password"]
     if is_reg:
         required.extend(["first_name", "last_name"])
-    return all([k.lower() in required for k in json.keys()])
+    return all([json.get(r) for r in required])
 
 
 @api.route('/users/signup', methods=['POST'])
@@ -20,7 +20,11 @@ def create_user():
     if not request.json or not is_ready_for(request.json, is_reg=True):
         return abort_json(400, "Not all required parameters are passed")
 
-    navi_data = na.post_req("/profile", request.json)
+    navi_data = na.post_req(
+        "/profile",
+        json=request.json,
+        headers={"content-type": "application/json"}
+    )
     if navi_data.status_code != 200:
         return abort_json(navi_data.status_code, navi_data.text)
 
@@ -45,7 +49,11 @@ def check_user():
     if not request.json or not is_ready_for(request.json):
         return abort_json(400, "Not all required parameters are passed")
 
-    navi_data = na.post_req("/sessions", request.json)
+    navi_data = na.post_req(
+        "/sessions",
+        json=request.json,
+        headers={"content-type": "application/json"}
+    )
     if navi_data.status_code != 200:
         return abort_json(navi_data.status_code, navi_data.text)
 

@@ -21,7 +21,7 @@ class User(UserMixin, db.Model):
                                  lazy="dynamic")
     events = db.relationship('Participant',
                              foreign_keys=[Participant.user_id],
-                             backref=db.backref('participants', lazy='dynamic'),
+                             backref=db.backref('participants', lazy='joined'),
                              lazy='dynamic',
                              cascade='all, delete-orphan')
 
