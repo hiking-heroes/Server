@@ -257,7 +257,7 @@
 
 #### Создать ивент
 * [Оглавление](#Оглавление)
-  > **[POST]** `/events/signin`
+  > **[POST]** `/events`
   
   **^{}** Required header's data:
   ```
