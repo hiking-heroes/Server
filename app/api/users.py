@@ -11,7 +11,7 @@ from .help_func import is_params_passed
 @api.route('/users/signup', methods=['POST'])
 def create_user():
     """SIGN UP"""
-    required = ["email", "password"]
+    required = ["email", "password", "first_name", "last_name"]
     if not request.json or not is_params_passed(request.json, required):
         return error_response(400, "Not all required parameters are passed")
 
@@ -41,7 +41,7 @@ def create_user():
 @api.route('/users/signin', methods=['POST'])
 def check_user():
     """SIGN IN"""
-    required = ["email", "password", "first_name", "last_name"]
+    required = ["email", "password"]
     if not request.json or not is_params_passed(request.json, required):
         return error_response(400, "Not all required parameters are passed")
 
