@@ -72,11 +72,11 @@ def check_user():
     return jsonify(navi_user)
 
 
-@api.route('/users/<int:id>', methods=['PUT'])
-def update_user(id):
+@api.route('/users/<int:uid>', methods=['PUT'])
+def update_user(uid):
     return jsonify({})
 
 
-@api.route('/users/<int:id>', methods=['DELETE'])
-def delete_user(id):
+@api.route('/users/<int:uid>', methods=['DELETE'])
+def delete_user(uid):
     return jsonify({'result': True})

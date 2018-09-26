@@ -24,9 +24,9 @@ def get_events_for_square():
     return jsonify({"events": [e.to_json() for e in events]})
 
 
-@api.route('/events/<int:id>')
-def get_event(id):
-    event = Event.query.get(id)
+@api.route('/events/<eid>')
+def get_event(eid):
+    event = Event.query.get(eid)
     if not event:
         return abort_json(404, "Event not found")
 
@@ -114,4 +114,3 @@ def add_member(eid):
 @api.route('/events/<int:eid>/members', methods=['DELETE'])
 def delete_member(eid):
     return jsonify({'result': True})
-
