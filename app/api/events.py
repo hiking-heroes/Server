@@ -43,7 +43,9 @@ def get_event(eid):
 
 @api.route('/events', methods=['POST'])
 def create_event():
-    user = User.query.filter_by(navi_token=request.headers.get("token", ""))
+    user = User.query.filter_by(
+        navi_token=request.headers.get("token", "")
+    ).first()
     if not user:
         abort_json(401, "Token check failed")
 
@@ -106,11 +108,11 @@ def delete_event(eid):
     return jsonify({'result': True})
 
 
-@api.route('/events/<int:eid>/members', methods=['POST'])
+@api.route('/events/<int:eid>/participants', methods=['POST'])
 def add_member(eid):
     return jsonify()
 
 
-@api.route('/events/<int:eid>/members', methods=['DELETE'])
+@api.route('/events/<int:eid>/participants', methods=['DELETE'])
 def delete_member(eid):
     return jsonify({'result': True})

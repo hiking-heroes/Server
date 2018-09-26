@@ -1,9 +1,11 @@
 # Server
 [![CodeFactor](https://www.codefactor.io/repository/github/hiking-heroes/server/badge)](https://www.codefactor.io/repository/github/hiking-heroes/server)
 ## Документация API
-
-Доступ к API производится по адресу `https://bigcitylife.pythonanywhere.com/api/v1`
-
+***
+**NOTE**
+* Доступ к API производится по адресу `https://bigcitylife.pythonanywhere.com/api/v1`  
+* В методах, где требуется отправить JSON данные, в HEADERS должно быть указано `"content-type": "application/json"`
+***
 ## Оглавление
 * [Test](#test)
   * [Тестовый метод для проверки](#Тестовый-метод-для-проверки)
@@ -13,6 +15,7 @@
 * [Events](#events)
   * [Получить список ивентов для карты](#Получить-список-ивентов-для-карты)
   * [Получить иформацию по ивенту](#Получить-иформацию-по-ивенту)
+  * [Создать ивент](#Создать-ивент)
 
 ### Test
 #### Тестовый метод для проверки
@@ -27,7 +30,7 @@
   ```
   Any or None
   ```
-  **{}->** Answer:
+  **{}->** Answer: *200*
   ```
   {
     'result': True,
@@ -51,7 +54,7 @@
     'last_name': str
   }
   ```
-  **{}->** Answer:
+  **{}->** Answer: *201*
   ```
   {
     'guest': bool, 
@@ -86,7 +89,7 @@
     'password': str
   }
   ```
-  **{}->** Answer:
+  **{}->** Answer: *200*
   ```
   {
     'guest': bool, 
@@ -137,7 +140,7 @@
   ```
   & type=str                - тип ивента
   ```
-  **{}->** Answer:
+  **{}->** Answer: *200*
   ```
   {
     'events': [
@@ -159,7 +162,124 @@
 * [Оглавление](#Оглавление)
   > **[GET]** `/events/{id}`
   
-  **{}->** Answer:
+  **{}->** Answer: *200*
+  ```
+  {
+    'id': int,
+    'container': str,
+    'naviaddress': str,
+    'owner_id': int,
+    'latitude': float,
+    'longitude': float,
+    'type': str,
+    'navi' : {
+      'name': str,
+      'description': str,
+      'booking': {
+        'website': str,
+        'caption': str,
+        'telephone': str
+      },
+      'naviaddress': str,
+      'container': str,
+      'point': {
+        'lat': int,
+        'lng': int
+      },
+      'contacts': [
+        {
+          'type': str,
+          'value': str
+        },
+        ...
+      ],
+      'event_start': datetime,
+      'event_end': datetime,
+      'address_description': {
+        'floor': str,
+        'building': str,
+        'apartment': str,
+        'intercom': str,
+        'isoffice': bool
+      },
+      'last_mile': {
+        'text': str,
+        'type': str,
+        'steps': [
+          {
+            'text': str,
+            'image': str,
+            'image_uuid': str
+          },
+          ...
+        ]
+      },
+      'postal_address': str,
+      'cover': [
+        {
+          'image_uuid': str,
+          'image': str
+        },
+        ...
+      ],
+      'sharable_cover': [
+        {
+          'image_uuid': str,
+          'image': str
+        },
+        ...
+      ],
+      'working_hours': [
+        {
+          'open_time': str,
+          'close_time': str,
+          'break_start_time': str,
+          'break_end_time': str,
+          'days': [
+            str,
+            ...
+          ]
+        },
+        ...
+      ],
+      'map_visibility': bool,
+      'category': {
+        'id': int,
+        'dbid': str,
+        'name': str,
+        'additional_name': str
+      },
+      'default_lang': str,
+      'lang': str
+    }
+  }
+  ```
+
+#### Создать ивент
+* [Оглавление](#Оглавление)
+  > **[POST]** `/events/signin`
+  
+  **^{}** Required header's data:
+  ```
+  {
+    'token': str
+  }
+  ```
+  **<-{}** Required data:
+  ```
+  {
+    'lat': float,
+    'lng': float
+  }
+  ```
+  **<-{}** Optional args:
+  ```
+  {
+    'type': str,
+    'default_lang': str
+  }
+  ```
+  **{}->** Answer: *201*
   ```
   {
     'id': int,
