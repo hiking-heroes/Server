@@ -15,6 +15,9 @@ def create_app(config_name):
     bootstrap.init_app(app)
     db.init_app(app)
 
+    from app.errors import bp as errors_bp
+    app.register_blueprint(errors_bp)
+
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
 

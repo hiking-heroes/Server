@@ -35,6 +35,10 @@ class User(UserMixin, db.Model):
     def create_event(self, json: dict):
         pass
 
+    @staticmethod
+    def check_token(token):
+        return User.query.filter_by(navi_token=token).first()
+
 
 class Event(db.Model):
     __tablename__ = "events"

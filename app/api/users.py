@@ -4,7 +4,7 @@ from . import api
 from ..models import User
 from .. import naviaddress as na
 from .. import db
-from .errors import abort_json
+from .errors import error_response
 from .help_func import is_params_passed
 
 
@@ -13,7 +13,7 @@ def create_user():
     """SIGN UP"""
     required = ["email", "password"]
     if not request.json or not is_params_passed(request.json, required):
-        return abort_json(400, "Not all required parameters are passed")
+        return error_response(400, "Not all required parameters are passed")
 
     navi_data = na.post_req(
         "/profile",
@@ -21,7 +21,7 @@ def create_user():
         headers={"content-type": "application/json"}
     )
     if navi_data.status_code != 200:
-        return abort_json(navi_data.status_code, navi_data.text)
+        return error_response(navi_data.status_code, navi_data.text)
 
     navi_user = navi_data.json()
 
@@ -43,7 +43,7 @@ def check_user():
     """SIGN IN"""
     required = ["email", "password", "first_name", "last_name"]
     if not request.json or not is_params_passed(request.json, required):
-        return abort_json(400, "Not all required parameters are passed")
+        return error_response(400, "Not all required parameters are passed")
 
     navi_data = na.post_req(
         "/sessions",
@@ -51,7 +51,7 @@ def check_user():
         headers={"content-type": "application/json"}
     )
     if navi_data.status_code != 200:
-        return abort_json(navi_data.status_code, navi_data.text)
+        return error_response(navi_data.status_code, navi_data.text)
 
     navi_user = navi_data.json()
 

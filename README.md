@@ -262,7 +262,7 @@
   **^{}** Required header's data:
   ```
   {
-    'token': str
+    'Authorization': str    - token
   }
   ```
   **<-{}** Required data:

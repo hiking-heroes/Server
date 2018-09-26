@@ -1,18 +1,19 @@
-from flask import jsonify, request
+from flask import jsonify, request, g
 
 from . import api
-from ..models import Event, User
-from .errors import abort_json
+from ..models import Event
+from .errors import error_response
 from .. import naviaddress as na
 from .help_func import is_params_passed
 from .. import db
+from .auth import token_auth
 
 
 @api.route("/events", methods=["GET"])
 def get_events_for_square():
     required = ["lt_lat", "lt_lng", "rb_lat", "rb_lng"]
     if not request.args or not is_params_passed(request.args, required):
-        return abort_json(400, "Not all required arguments are passed")
+        return error_response(400, "Not all required arguments are passed")
 
     events = Event.get_for_square(
         lt_lat=request.args["lt_lat"],
@@ -28,13 +29,13 @@ def get_events_for_square():
 def get_event(eid):
     event = Event.query.get(eid)
     if not event:
-        return abort_json(404, "Event not found")
+        return error_response(404, "Event not found")
 
     navi_data = na.get_req(
         "/addresses/{0}/{1}".format(event.container, event.naviaddress)
     )
     if navi_data.status_code != 200:
-        return abort_json(navi_data.status_code, navi_data.text)
+        return error_response(navi_data.status_code, navi_data.text)
 
     navi_event = navi_data.json()
 
@@ -42,16 +43,13 @@ def get_event(eid):
 
 
 @api.route('/events', methods=['POST'])
+@token_auth.login_required
 def create_event():
-    user = User.query.filter_by(
-        navi_token=request.headers.get("token", "")
-    ).first()
-    if not user:
-        abort_json(401, "Token check failed")
+    user = g.current_user
 
     required = ["lat", "lng"]
     if not request.json or not is_params_passed(request.json, required):
-        return abort_json(400, "Not all required parameters are passed")
+        return error_response(400, "Not all required parameters are passed")
 
     navi_data = na.post_req(
         "/addresses",
@@ -67,7 +65,7 @@ def create_event():
         }
     )
     if navi_data.status_code != 200:
-        return abort_json(navi_data.status_code, navi_data.text)
+        return error_response(navi_data.status_code, navi_data.text)
 
     c, n = navi_data.json()["container"], navi_data.json()["naviaddress"]
 
@@ -80,7 +78,7 @@ def create_event():
         }
     )
     if navi_data.status_code != 200:
-        return abort_json(navi_data.status_code, navi_data.text)
+        return error_response(navi_data.status_code, navi_data.text)
 
     # 3. TODO: Обновить его информацию в нави
 
