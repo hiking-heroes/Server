@@ -5,19 +5,14 @@ from ..models import User
 from .. import naviaddress as na
 from .. import db
 from .errors import abort_json
-
-
-def is_ready_for(json: dict, is_reg=False) -> bool:
-    required = ["email", "password"]
-    if is_reg:
-        required.extend(["first_name", "last_name"])
-    return all([json.get(r) for r in required])
+from .help_func import is_params_passed
 
 
 @api.route('/users/signup', methods=['POST'])
 def create_user():
     """SIGN UP"""
-    if not request.json or not is_ready_for(request.json, is_reg=True):
+    required = ["email", "password"]
+    if not request.json or not is_params_passed(request.json, required):
         return abort_json(400, "Not all required parameters are passed")
 
     navi_data = na.post_req(
@@ -46,7 +41,8 @@ def create_user():
 @api.route('/users/signin', methods=['POST'])
 def check_user():
     """SIGN IN"""
-    if not request.json or not is_ready_for(request.json):
+    required = ["email", "password", "first_name", "last_name"]
+    if not request.json or not is_params_passed(request.json, required):
         return abort_json(400, "Not all required parameters are passed")
 
     navi_data = na.post_req(

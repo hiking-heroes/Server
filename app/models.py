@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 
 from . import db
+from . import naviaddress as na
 
 
 class Participant(db.Model):
@@ -31,10 +32,13 @@ class User(UserMixin, db.Model):
     def get_events(self) -> list:
         return [e.to_json() for e in self.events.all()]
 
+    def create_event(self, json: dict):
+        pass
+
 
 class Event(db.Model):
     __tablename__ = "events"
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     container = db.Column(db.String(10), nullable=False)
     naviaddress = db.Column(db.String(20), nullable=False, unique=True)
     latitude = db.Column(db.Float)
