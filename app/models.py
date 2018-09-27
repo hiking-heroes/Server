@@ -28,10 +28,9 @@ class User(UserMixin, db.Model):
         super(User, self).__init__(**kwargs)
 
     def get_events(self) -> list:
-        return [e.to_json() for e in self.events.all()]
-
-    def create_event(self, json: dict):
-        pass
+        events = [e.to_json() for e in self.own_events.all()]
+        events.extend([e.to_json() for e in self.events.all()])
+        return events
 
     @staticmethod
     def check_token(token):
