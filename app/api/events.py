@@ -20,7 +20,9 @@ def get_events_for_square():
         lt_lng=request.args["lt_lng"],
         rb_lat=request.args["rb_lat"],
         rb_lng=request.args["rb_lng"],
-        event_type=request.args.get("type", "any")
+        event_type=request.args.get("type", None),
+        start=request.args.get("start", None),
+        end=request.args.get("end", None)
     )
     return jsonify({"events": [e.to_json() for e in events]})
 

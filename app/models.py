@@ -56,14 +56,22 @@ class Event(db.Model):
                                    cascade='all, delete-orphan')
 
     @staticmethod
-    def get_for_square(lt_lat, lt_lng, rb_lat, rb_lng, event_type):
-        return Event.query.filter(
+    def get_for_square(lt_lat, lt_lng, rb_lat, rb_lng, event_type=None,
+                       start=None, end=None):
+        q = Event.query.filter(
             Event.latitude > lt_lat,
             Event.longitude > lt_lng,
             Event.latitude < rb_lat,
             Event.longitude < rb_lng,
-            event_type == "any" or Event.type == event_type
-        ).all()
+        )
+        if event_type:
+            q = q.filter(Event.type == event_type)
+        if start and end:
+            q = q.filter(
+                Event.start > start,
+                Event.start < end
+            )
+        return q.all()
 
     def add_participant(self, user):
         if user not in self.participants:

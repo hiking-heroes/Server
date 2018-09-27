@@ -87,6 +87,8 @@
   **?..&..** Optional args:
   ```
   & type=str                - тип ивента
+  & start=str               - datetime начала интервала. !end required
+  & end=str                 - datetime конца             !start required
   ```
   **{}->** Answer: *200*
   ```
@@ -167,6 +169,7 @@
   
 ## Модели
 ### Full User
+* [Оглавление](#Оглавление)
 ```
 {
   'guest': bool, 
@@ -201,6 +204,7 @@
 }
 ```
 ### Full Event
+* [Оглавление](#Оглавление)
 ```
 {
   'id': int,
