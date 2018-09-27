@@ -70,6 +70,11 @@ class Event(db.Model):
             p = Participant(user_id=user.id, event_id=self.id, confirmed=True)
             db.session.add(p)
 
+    def delete_participant(self, user):
+        p = self.participants.filter_by(user_id=user.id).first()
+        if p:
+            db.session.delete(p)
+
     def to_json(self, navi: dict = None) -> dict:
         response = {
             "id": self.id,

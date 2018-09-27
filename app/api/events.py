@@ -117,6 +117,11 @@ def update_event(eid):
     return jsonify({})
 
 
+@api.route('/events/<int:eid>', methods=['DELETE'])
+def delete_event(eid):
+    return jsonify({'result': True})
+
+
 @api.route('/events/<int:eid>/join', methods=['PUT'])
 @token_auth.login_required
 def join_event(eid):
@@ -128,16 +133,12 @@ def join_event(eid):
     return get_event(eid)
 
 
-@api.route('/events/<int:eid>', methods=['DELETE'])
-def delete_event(eid):
-    return jsonify({'result': True})
-
-
-@api.route('/events/<int:eid>/participants', methods=['POST'])
-def add_member(eid):
-    return jsonify()
-
-
-@api.route('/events/<int:eid>/participants', methods=['DELETE'])
-def delete_member(eid):
-    return jsonify({'result': True})
+@api.route('/events/<int:eid>/exit', methods=['PUT'])
+@token_auth.login_required
+def exit_event(eid):
+    event = Event.query.get(eid)
+    if not event:
+        return error_response(404, "Event not found")
+    event.delete_participant(g.current_user)
+    db.session.commit()
+    return get_event(eid)
