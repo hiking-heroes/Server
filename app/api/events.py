@@ -4,7 +4,7 @@ from . import api
 from ..models import Event
 from .errors import error_response
 from .. import naviaddress as na
-from .help_func import is_params_passed
+from .help_func import is_params_passed, fill_navi_address_data
 from .. import db
 from .auth import token_auth
 
@@ -32,7 +32,9 @@ def get_event(eid):
         return error_response(404, "Event not found")
 
     navi_data = na.get_req(
-        "/addresses/{0}/{1}".format(event.container, event.naviaddress)
+        "/addresses/{0}/{1}".format(
+            event.container, event.naviaddress
+        ).replace("#", "%23")
     )
     if navi_data.status_code != 200:
         return error_response(navi_data.status_code, navi_data.text)
@@ -67,10 +69,12 @@ def create_event():
     if navi_data.status_code != 200:
         return error_response(navi_data.status_code, navi_data.text)
 
-    c, n = navi_data.json()["container"], navi_data.json()["naviaddress"]
+    navi_event = navi_data.json()["result"]
+    c, n = navi_event["container"], navi_event["naviaddress"]
+    navi_method = "/addresses/accept/{0}/{1}".format(c, n).replace("#", "%23")
 
     navi_data = na.post_req(
-        "/addresses/accept/{0}/{1}".format(c, n).replace("#", "%23"),
+        navi_method,
         json={"container": c, "naviaddress": n},
         headers={
             "auth-token": user.navi_token,
@@ -81,19 +85,31 @@ def create_event():
         return error_response(navi_data.status_code, navi_data.text)
 
     # 3. TODO: Обновить его информацию в нави
+    navi_data = na.put_req(
+        navi_method.replace("/accept", ""),
+        json=fill_navi_address_data(**request.json, owner_email=user.email),
+        headers={
+            "auth-token": user.navi_token,
+            "content-type": "application/json"
+        }
+    )
+    if navi_data.status_code != 200:
+        return error_response(navi_data.status_code, navi_data.text)
 
     event = Event(
         container=c,
         naviaddress=n,
         latitude=request.json["lat"],
         longitude=request.json["lng"],
+        start=request.json["event_start"],
+        end=request.json["event_end"],
         type=request.json.get("type", "no type"),
         owner=user
     )
     db.session.add_all([user, event])
     db.session.commit()
 
-    return jsonify(navi_data.json()), 201
+    return get_event(event.id), 201
 
 
 @api.route('/events/<int:eid>', methods=['PUT'])

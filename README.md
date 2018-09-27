@@ -269,14 +269,21 @@
   ```
   {
     'lat': float,
-    'lng': float
+    'lng': float,
+    'name': str,
+    'event_start': str,
+    'event_end': str
   }
   ```
   **<-{}** Optional args:
   ```
   {
+    'description': str,
+    'web': str
     'type': str,
-    'default_lang': str
+    'default_lang': str,
+    'lang': str,
+    'map_visibility': bool
   }
   ```
   **{}->** Answer: *201*

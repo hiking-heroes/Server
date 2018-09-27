@@ -47,6 +47,8 @@ class Event(db.Model):
     naviaddress = db.Column(db.String(20), nullable=False, unique=True)
     latitude = db.Column(db.Float)
     longitude = db.Column(db.Float)
+    start = db.Column(db.String(24))
+    end = db.Column(db.String(24))
     type = db.Column(db.String(25), index=True, default="no type")
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
 
@@ -68,6 +70,8 @@ class Event(db.Model):
             "owner_id": self.owner_id,
             "latitude": self.latitude,
             "longitude": self.longitude,
+            "start": self.start,
+            "end": self.end,
             "type": self.type
         }
         if navi:
