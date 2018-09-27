@@ -84,7 +84,6 @@ def create_event():
     if navi_data.status_code != 200:
         return error_response(navi_data.status_code, navi_data.text)
 
-    # 3. TODO: Обновить его информацию в нави
     navi_data = na.put_req(
         navi_method.replace("/accept", ""),
         json=fill_navi_address_data(**request.json, owner_email=user.email),
@@ -104,6 +103,7 @@ def create_event():
         start=request.json["event_start"],
         end=request.json["event_end"],
         type=request.json.get("type", "no type"),
+        places=request.json.get("seats", None),
         owner=user
     )
     db.session.add_all([user, event])
@@ -115,6 +115,17 @@ def create_event():
 @api.route('/events/<int:eid>', methods=['PUT'])
 def update_event(eid):
     return jsonify({})
+
+
+@api.route('/events/<int:eid>/join', methods=['PUT'])
+@token_auth.login_required
+def join_event(eid):
+    event = Event.query.get(eid)
+    if not event:
+        return error_response(404, "Event not found")
+    event.add_participant(g.current_user)
+    db.session.commit()
+    return get_event(eid)
 
 
 @api.route('/events/<int:eid>', methods=['DELETE'])

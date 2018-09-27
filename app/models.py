@@ -1,7 +1,6 @@
 from flask_login import UserMixin
 
 from . import db
-from . import naviaddress as na
 
 
 class Participant(db.Model):
@@ -22,7 +21,6 @@ class User(UserMixin, db.Model):
                                  lazy="dynamic")
     events = db.relationship('Participant',
                              foreign_keys=[Participant.user_id],
-                             backref=db.backref('participants', lazy='joined'),
                              lazy='dynamic',
                              cascade='all, delete-orphan')
 
@@ -49,8 +47,13 @@ class Event(db.Model):
     longitude = db.Column(db.Float)
     start = db.Column(db.String(24))
     end = db.Column(db.String(24))
+    places = db.Column(db.Integer)
     type = db.Column(db.String(25), index=True, default="no type")
     owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    participants = db.relationship('Participant',
+                                   foreign_keys=[Participant.event_id],
+                                   lazy='dynamic',
+                                   cascade='all, delete-orphan')
 
     @staticmethod
     def get_for_square(lt_lat, lt_lng, rb_lat, rb_lng, event_type):
@@ -62,6 +65,11 @@ class Event(db.Model):
             event_type == "any" or Event.type == event_type
         ).all()
 
+    def add_participant(self, user):
+        if user not in self.participants:
+            p = Participant(user_id=user.id, event_id=self.id, confirmed=True)
+            db.session.add(p)
+
     def to_json(self, navi: dict = None) -> dict:
         response = {
             "id": self.id,
@@ -72,7 +80,12 @@ class Event(db.Model):
             "longitude": self.longitude,
             "start": self.start,
             "end": self.end,
-            "type": self.type
+            "type": self.type,
+            "seats": {
+                "total": self.places,
+                "free": self.places - self.participants.filter_by(
+                    confirmed=True).count()if self.places else None
+            }
         }
         if navi:
             response["navi"] = navi

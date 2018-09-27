@@ -1,6 +1,6 @@
 # Server
 [![CodeFactor](https://www.codefactor.io/repository/github/hiking-heroes/server/badge)](https://www.codefactor.io/repository/github/hiking-heroes/server)
-## Документация API
+# Документация API
 ***
 **NOTE**
 * Доступ к API производится по адресу `https://bigcitylife.pythonanywhere.com/api/v1`  
@@ -17,8 +17,8 @@
   * [Получить иформацию по ивенту](#Получить-иформацию-по-ивенту)
   * [Создать ивент](#Создать-ивент)
 
-### Test
-#### Тестовый метод для проверки
+## Test
+### Тестовый метод для проверки
 * [Оглавление](#Оглавление)
   > **[GET], [POST], [PUT], [DELETE]** `/test`
   
@@ -40,8 +40,8 @@
   }
    ```
 
-### Users
-#### Sign Up (Создать нового пользователя в NaviAddress)  
+## Users
+### Sign Up (Создать нового пользователя в NaviAddress)  
 * [Оглавление](#Оглавление)
   > **[POST]** `/users/signup`
   
@@ -54,31 +54,10 @@
     'last_name': str
   }
   ```
-  **{}->** Answer: *201*
-  ```
-  {
-    'guest': bool, 
-    'id': int, 
-    'email': str, 
-    'first_name': str, 
-    'last_name': str, 
-    'token': str,
-    'gdpr_is_collect_analytic_data': bool, 
-    'gdpr_is_receive_newsletter': bool, 
-    'gdpr_is_restrict_user_data': bool, 
-    'is_confirmed': bool, 
-    'is_nps_sent': bool, 
-    'nps': int, 
-    'permissions': 
-      {
-        'event_addresses_limit': int, 
-        'free_addresses_limit': int
-      }, 
-    'events': []            - список будущих ивентов (пустой)
-  }
-  ```
+  **{}->** Answer: *201*  
+  [Full User](#full-user)
 
-#### Sign In  
+### Sign In  
 * [Оглавление](#Оглавление)
   > **[POST]** `/users/signin`
   
@@ -89,43 +68,12 @@
     'password': str
   }
   ```
-  **{}->** Answer: *200*
-  ```
-  {
-    'guest': bool, 
-    'id': int, 
-    'email': str, 
-    'first_name': str, 
-    'last_name': str, 
-    'token': str,
-    'gdpr_is_collect_analytic_data': bool, 
-    'gdpr_is_receive_newsletter': bool, 
-    'gdpr_is_restrict_user_data': bool, 
-    'is_confirmed': bool, 
-    'is_nps_sent': bool, 
-    'nps': int, 
-    'permissions': 
-      {
-        'event_addresses_limit': int, 
-        'free_addresses_limit': int
-      }, 
-    'events': [             - список будущих ивентов
-      {
-        'id': int,
-        'container': str,
-        'naviaddress': str,
-        'owner_id': int,
-        'latitude': float,
-        'longitude': float,
-        'type': str
-      },
-      ...
-    ]
-  }
-  ```
+  **{}->** Answer: *200*  
+  [Full User](#full-user)
+  
 
-### Events
-#### Получить список ивентов для карты
+## Events
+### Получить список ивентов для карты
 * [Оглавление](#Оглавление)
   > **[GET]** `/events`
   
@@ -151,111 +99,25 @@
         'owner_id': int,
         'latitude': float,
         'longitude': float,
-        'type': str
+        'type': str,
+        'seats' {
+          'total': int or null,
+          'free': int or null
+        }
       },
       ...
     ]
   }
   ```
 
-#### Получить иформацию по ивенту
+### Получить иформацию по ивенту
 * [Оглавление](#Оглавление)
   > **[GET]** `/events/{id}`
   
-  **{}->** Answer: *200*
-  ```
-  {
-    'id': int,
-    'container': str,
-    'naviaddress': str,
-    'owner_id': int,
-    'latitude': float,
-    'longitude': float,
-    'type': str,
-    'navi' : {
-      'name': str,
-      'description': str,
-      'booking': {
-        'website': str,
-        'caption': str,
-        'telephone': str
-      },
-      'naviaddress': str,
-      'container': str,
-      'point': {
-        'lat': int,
-        'lng': int
-      },
-      'contacts': [
-        {
-          'type': str,
-          'value': str
-        },
-        ...
-      ],
-      'event_start': datetime,
-      'event_end': datetime,
-      'address_description': {
-        'floor': str,
-        'building': str,
-        'apartment': str,
-        'intercom': str,
-        'isoffice': bool
-      },
-      'last_mile': {
-        'text': str,
-        'type': str,
-        'steps': [
-          {
-            'text': str,
-            'image': str,
-            'image_uuid': str
-          },
-          ...
-        ]
-      },
-      'postal_address': str,
-      'cover': [
-        {
-          'image_uuid': str,
-          'image': str
-        },
-        ...
-      ],
-      'sharable_cover': [
-        {
-          'image_uuid': str,
-          'image': str
-        },
-        ...
-      ],
-      'working_hours': [
-        {
-          'open_time': str,
-          'close_time': str,
-          'break_start_time': str,
-          'break_end_time': str,
-          'days': [
-            str,
-            ...
-          ]
-        },
-        ...
-      ],
-      'map_visibility': bool,
-      'category': {
-        'id': int,
-        'dbid': str,
-        'name': str,
-        'additional_name': str
-      },
-      'default_lang': str,
-      'lang': str
-    }
-  }
-  ```
+  **{}->** Answer: *200*  
+  [Full Event](#full-event)
 
-#### Создать ивент
+### Создать ивент
 * [Оглавление](#Оглавление)
   > **[POST]** `/events`
   
@@ -283,98 +145,154 @@
     'type': str,
     'default_lang': str,
     'lang': str,
-    'map_visibility': bool
+    'map_visibility': bool,
+    'seats': int
   }
   ```
-  **{}->** Answer: *201*
+  **{}->** Answer: *201*  
+  [Full Event](#full-event)
+  
+### Регистрация на ивент
+* [Оглавление](#Оглавление)
+  > **[PUT]** `/events/{id}/join`
+  
+  **^{}** Required header's data:
   ```
   {
-    'id': int,
-    'container': str,
-    'naviaddress': str,
-    'owner_id': int,
-    'latitude': float,
-    'longitude': float,
-    'type': str,
-    'navi' : {
-      'name': str,
-      'description': str,
-      'booking': {
-        'website': str,
-        'caption': str,
-        'telephone': str
-      },
-      'naviaddress': str,
+    'Authorization': str    - token
+  }
+  ```
+  **{}->** Answer: *200*  
+  [Full Event](#full-event)
+  
+## Модели
+### Full User
+```
+{
+  'guest': bool, 
+  'id': int, 
+  'email': str, 
+  'first_name': str, 
+  'last_name': str, 
+  'token': str,
+  'gdpr_is_collect_analytic_data': bool, 
+  'gdpr_is_receive_newsletter': bool, 
+  'gdpr_is_restrict_user_data': bool, 
+  'is_confirmed': bool, 
+  'is_nps_sent': bool, 
+  'nps': int, 
+  'permissions': 
+    {
+      'event_addresses_limit': int, 
+      'free_addresses_limit': int
+    }, 
+  'events': [             - список будущих ивентов
+    {
+      'id': int,
       'container': str,
-      'point': {
-        'lat': int,
-        'lng': int
+      'naviaddress': str,
+      'owner_id': int,
+      'latitude': float,
+      'longitude': float,
+      'type': str
+    },
+    ...
+  ]
+}
+```
+### Full Event
+```
+{
+  'id': int,
+  'container': str,
+  'naviaddress': str,
+  'owner_id': int,
+  'latitude': float,
+  'longitude': float,
+  'type': str,
+  'seats' {
+    'total': int or null,
+    'free': int or null
+  },
+  'navi' : {
+    'name': str,
+    'description': str,
+    'booking': {
+      'website': str,
+      'caption': str,
+      'telephone': str
+    },
+    'naviaddress': str,
+    'container': str,
+    'point': {
+      'lat': int,
+      'lng': int
+    },
+    'contacts': [
+      {
+        'type': str,
+        'value': str
       },
-      'contacts': [
+      ...
+    ],
+    'event_start': datetime,
+    'event_end': datetime,
+    'address_description': {
+      'floor': str,
+      'building': str,
+      'apartment': str,
+      'intercom': str,
+      'isoffice': bool
+    },
+    'last_mile': {
+      'text': str,
+      'type': str,
+      'steps': [
         {
-          'type': str,
-          'value': str
+          'text': str,
+          'image': str,
+          'image_uuid': str
         },
         ...
-      ],
-      'event_start': datetime,
-      'event_end': datetime,
-      'address_description': {
-        'floor': str,
-        'building': str,
-        'apartment': str,
-        'intercom': str,
-        'isoffice': bool
+      ]
+    },
+    'postal_address': str,
+    'cover': [
+      {
+        'image_uuid': str,
+        'image': str
       },
-      'last_mile': {
-        'text': str,
-        'type': str,
-        'steps': [
-          {
-            'text': str,
-            'image': str,
-            'image_uuid': str
-          },
+      ...
+    ],
+    'sharable_cover': [
+      {
+        'image_uuid': str,
+        'image': str
+      },
+      ...
+    ],
+    'working_hours': [
+      {
+        'open_time': str,
+        'close_time': str,
+        'break_start_time': str,
+        'break_end_time': str,
+        'days': [
+          str,
           ...
         ]
       },
-      'postal_address': str,
-      'cover': [
-        {
-          'image_uuid': str,
-          'image': str
-        },
-        ...
-      ],
-      'sharable_cover': [
-        {
-          'image_uuid': str,
-          'image': str
-        },
-        ...
-      ],
-      'working_hours': [
-        {
-          'open_time': str,
-          'close_time': str,
-          'break_start_time': str,
-          'break_end_time': str,
-          'days': [
-            str,
-            ...
-          ]
-        },
-        ...
-      ],
-      'map_visibility': bool,
-      'category': {
-        'id': int,
-        'dbid': str,
-        'name': str,
-        'additional_name': str
-      },
-      'default_lang': str,
-      'lang': str
-    }
+      ...
+    ],
+    'map_visibility': bool,
+    'category': {
+      'id': int,
+      'dbid': str,
+      'name': str,
+      'additional_name': str
+    },
+    'default_lang': str,
+    'lang': str
   }
-  ```
+}
+```
