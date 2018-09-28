@@ -55,6 +55,7 @@ class User(UserMixin, db.Model):
 class Event(db.Model):
     __tablename__ = "events"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(150), nullable=False)
     container = db.Column(db.String(10), nullable=False)
     naviaddress = db.Column(db.String(20), nullable=False, unique=True)
     latitude = db.Column(db.Float)
@@ -126,6 +127,7 @@ class Event(db.Model):
     def to_json(self, navi: dict = None) -> dict:
         response = {
             "id": self.id,
+            "name": self.name,
             "container": self.container,
             "naviaddress": self.naviaddress,
             "owner_id": self.owner_id,

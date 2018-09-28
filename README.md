@@ -99,6 +99,7 @@
     'events': [
       {
         'id': int,
+        'name': str,
         'container': str,
         'naviaddress': str,
         'owner_id': int,
@@ -207,6 +208,7 @@
     'events': [
       {
         'id': int,
+        'name': str,
         'container': str,
         'naviaddress': str,
         'owner_id': int,
@@ -252,6 +254,7 @@
   'events': [             - список ивентов
     {
       'id': int,
+      'name': str,
       'container': str,
       'naviaddress': str,
       'owner_id': int,
@@ -276,6 +279,7 @@
 ```
 {
   'id': int,
+  'name': str,
   'container': str,
   'naviaddress': str,
   'owner_id': int,
