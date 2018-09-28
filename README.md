@@ -156,7 +156,7 @@
     'default_lang': str,
     'lang': str,
     'map_visibility': bool,
-    'seats': int,
+    'seats': str,
     'tags': [
       str,
       ...

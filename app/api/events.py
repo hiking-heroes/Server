@@ -97,19 +97,21 @@ def create_event():
     if navi_data.status_code != 200:
         return error_response(navi_data.status_code, navi_data.text)
 
-    tags = [Tag.get_or_create(t) for t in request.json["tags"]]
+    seats = int(request.json.get("seats")) if request.json.get("seats") else 0
 
     event = Event(
         container=c,
+        name=request.json["name"],
         naviaddress=n,
         latitude=request.json["lat"],
         longitude=request.json["lng"],
         start=request.json["event_start"],
         end=request.json["event_end"],
         type=request.json.get("type", "no type"),
-        places=request.json.get("seats", None),
+        places=seats,
         owner=user
     )
+    tags = [Tag.get_or_create(tag) for tag in request.json["tags"] if tag]
     for tag in tags:
         event.add_tag(tag)
 
