@@ -18,6 +18,7 @@
   * [Создать ивент](#Создать-ивент)
   * [Присоединиться к ивенту](#Присоединиться-к-ивенту)
   * [Покинуть ивент](#Покинуть-ивент)
+  * [Список всех ивентов пользователя](#Список-всех-ивентов-пользователя)
 
 ## Test
 ### Тестовый метод для проверки
@@ -190,6 +191,42 @@
   **{}->** Answer: *200*  
   [Full Event](#full-event)
   
+### Список всех ивентов пользователя
+* [Оглавление](#Оглавление)
+  > **[GET]** `/events/my`
+  
+  **^{}** Required header's data:
+  ```
+  {
+    'Authorization': str    - token
+  }
+  ```
+  **{}->** Answer: *200*  
+  ```
+  {
+    'events': [
+      {
+        'id': int,
+        'container': str,
+        'naviaddress': str,
+        'owner_id': int,
+        'latitude': float,
+        'longitude': float,
+        'type': str,
+        'seats' {
+          'total': int or null,
+          'free': int or null
+        },
+        'tags': [
+          str,
+          ...
+        ]
+      },
+      ...
+    ]
+  }
+  ```
+  
 ## Модели
 ### Full User
 * [Оглавление](#Оглавление)
@@ -212,7 +249,7 @@
       'event_addresses_limit': int, 
       'free_addresses_limit': int
     }, 
-  'events': [             - список будущих ивентов
+  'events': [             - список ивентов
     {
       'id': int,
       'container': str,
@@ -220,7 +257,15 @@
       'owner_id': int,
       'latitude': float,
       'longitude': float,
-      'type': str
+      'type': str,
+      'seats' {
+        'total': int or null,
+        'free': int or null
+      },
+      'tags': [
+        str,
+        ...
+      ]
     },
     ...
   ]

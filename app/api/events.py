@@ -151,3 +151,9 @@ def exit_event(eid):
     event.delete_participant(g.current_user)
     db.session.commit()
     return get_event(eid)
+
+
+@api.route('/events/my', methods=['GET'])
+@token_auth.login_required
+def get_user_events():
+    return jsonify({"events": g.current_user.get_all_events()})
