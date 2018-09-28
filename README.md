@@ -107,7 +107,11 @@
         'seats' {
           'total': int or null,
           'free': int or null
-        }
+        },
+        'tags': [
+          str,
+          ...
+        ]
       },
       ...
     ]
@@ -150,7 +154,11 @@
     'default_lang': str,
     'lang': str,
     'map_visibility': bool,
-    'seats': int
+    'seats': int,
+    'tags': [
+      str,
+      ...
+    ]
   }
   ```
   **{}->** Answer: *201*  
@@ -233,6 +241,10 @@
     'total': int or null,
     'free': int or null
   },
+  'tags': [
+    str,
+    ...
+  ],
   'navi' : {
     'name': str,
     'description': str,

@@ -67,7 +67,7 @@ def check_user():
     db.session.add(user)
     db.session.commit()
 
-    navi_user["events"] = user.get_events()
+    navi_user["events"] = user.get_all_events()
 
     return jsonify(navi_user)
 

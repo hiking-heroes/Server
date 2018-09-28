@@ -1,7 +1,7 @@
 from flask import jsonify, request, g
 
 from . import api
-from ..models import Event
+from ..models import Event, Tag
 from .errors import error_response
 from .. import naviaddress as na
 from .help_func import is_params_passed, fill_navi_address_data
@@ -97,6 +97,8 @@ def create_event():
     if navi_data.status_code != 200:
         return error_response(navi_data.status_code, navi_data.text)
 
+    tags = [Tag.get_or_create(t) for t in request.json["tags"]]
+
     event = Event(
         container=c,
         naviaddress=n,
@@ -108,7 +110,12 @@ def create_event():
         places=request.json.get("seats", None),
         owner=user
     )
-    db.session.add_all([user, event])
+    for tag in tags:
+        event.add_tag(tag)
+
+    session_values = [user, event]
+    session_values.extend(tags)
+    db.session.add_all(session_values)
     db.session.commit()
 
     return get_event(event.id), 201
