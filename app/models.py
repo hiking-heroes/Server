@@ -31,6 +31,8 @@ class User(UserMixin, db.Model):
                              foreign_keys=[Participant.user_id],
                              lazy='dynamic',
                              cascade='all, delete-orphan')
+    devices = db.relationship("Device", backref="owner",
+                              lazy="dynamic")
 
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
@@ -172,3 +174,16 @@ class Tag(db.Model):
         ).filter(
             EventTag.tag_id == self.id
         )
+
+
+class Device(db.Model):
+    __tablename__ = "devices"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    token = db.Column(db.String(152), unique=True, nullable=False)
+    owner_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+
+    def to_json(self):
+        return {
+            "id": self.id,
+            "token": self.token
+        }
