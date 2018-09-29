@@ -144,8 +144,14 @@ def join_event(eid):
     event.add_participant(g.current_user)
     db.session.commit()
     g.current_user.notify(
-        body="You've been joined to the event: [{0}]{1}".format(
+        body="You've been joined to the event [{0}]{1}".format(
             event.container, event.naviaddress
+        )
+    )
+    event.owner.notify(
+        title="User joined",
+        body="User {0} has been joined to your event [{1}]{2}".format(
+            g.current_user.email, event.container, event.naviaddress
         )
     )
     return get_event(eid)

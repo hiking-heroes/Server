@@ -1,7 +1,8 @@
 from flask import g
 from flask_httpauth import HTTPTokenAuth
+
+from .errors import error_response
 from ..models import User
-from .events import error_response
 
 token_auth = HTTPTokenAuth()
 
