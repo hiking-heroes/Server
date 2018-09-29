@@ -1,12 +1,11 @@
-from flask import jsonify, request, current_app
+from flask import jsonify, request
 
 from . import api
-from ..models import User
-from .. import naviaddress as na
-from .. import db
 from .errors import error_response
 from .help_func import is_params_passed
-from .. import fcm_notifications as fcm
+from .. import db
+from .. import naviaddress as na
+from ..models import User
 
 
 @api.route('/users/signup', methods=['POST'])

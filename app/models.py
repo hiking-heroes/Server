@@ -1,8 +1,8 @@
 from flask import current_app
 from flask_login import UserMixin
-from . import fcm_notifications as fcm
 
 from . import db
+from . import fcm_notifications as fcm
 
 
 class Participant(db.Model):

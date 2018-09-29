@@ -1,12 +1,12 @@
 from flask import jsonify, request, g
 
 from . import api
-from ..models import Event, Tag
+from .auth import token_auth
 from .errors import error_response
-from .. import naviaddress as na
 from .help_func import is_params_passed, fill_navi_address_data
 from .. import db
-from .auth import token_auth
+from .. import naviaddress as na
+from ..models import Event, Tag
 
 
 @api.route("/events", methods=["GET"])
