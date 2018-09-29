@@ -120,6 +120,8 @@ def create_event():
     db.session.add_all(session_values)
     db.session.commit()
 
+    user.notify(body="Event crated: [{0}]{1}".format(c, n))
+
     return get_event(event.id), 201
 
 
@@ -141,6 +143,11 @@ def join_event(eid):
         return error_response(404, "Event not found")
     event.add_participant(g.current_user)
     db.session.commit()
+    g.current_user.notify(
+        body="You've been joined to the event: [{0}]{1}".format(
+            event.container, event.naviaddress
+        )
+    )
     return get_event(eid)
 
 
