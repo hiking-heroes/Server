@@ -1,8 +1,8 @@
 """init
 
-Revision ID: 1dddd041874e
+Revision ID: fea45ed9f758
 Revises: 
-Create Date: 2018-09-28 19:47:46.161288
+Create Date: 2018-09-30 01:55:41.705710
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '1dddd041874e'
+revision = 'fea45ed9f758'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -30,6 +30,14 @@ def upgrade():
     sa.Column('navi_token', sa.String(length=36), nullable=False),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('email')
+    )
+    op.create_table('devices',
+    sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('token', sa.String(length=152), nullable=False),
+    sa.Column('owner_id', sa.Integer(), nullable=True),
+    sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id'),
+    sa.UniqueConstraint('token')
     )
     op.create_table('events',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
@@ -72,6 +80,7 @@ def downgrade():
     op.drop_table('events_tags')
     op.drop_index(op.f('ix_events_type'), table_name='events')
     op.drop_table('events')
+    op.drop_table('devices')
     op.drop_table('users')
     op.drop_index(op.f('ix_tags_title'), table_name='tags')
     op.drop_table('tags')
