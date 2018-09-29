@@ -1,4 +1,6 @@
+from flask import current_app
 from flask_login import UserMixin
+from . import fcm_notifications as fcm
 
 from . import db
 
@@ -52,6 +54,14 @@ class User(UserMixin, db.Model):
     @staticmethod
     def check_token(token):
         return User.query.filter_by(navi_token=token).first()
+
+    def notify(self, title: str = None, body: str = None):
+        if self.devices.count():
+            fcm.send_notification(
+                server_key=current_app.config["FCM_KEY"],
+                registration_ids=[d.token for d in self.devices.all()],
+                notification={"title": title, "body": body}
+            )
 
 
 class Event(db.Model):

@@ -1,4 +1,4 @@
-from flask import jsonify, request
+from flask import jsonify, request, current_app
 
 from . import api
 from ..models import User
@@ -6,6 +6,7 @@ from .. import naviaddress as na
 from .. import db
 from .errors import error_response
 from .help_func import is_params_passed
+from .. import fcm_notifications as fcm
 
 
 @api.route('/users/signup', methods=['POST'])
@@ -66,6 +67,8 @@ def check_user():
         )
     db.session.add(user)
     db.session.commit()
+
+    user.notify("Sign In", "Account was signed in.")
 
     navi_user["events"] = user.get_all_events()
 
