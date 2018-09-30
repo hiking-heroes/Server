@@ -63,17 +63,14 @@ class User(UserMixin, db.Model):
         if tags:
             own_q = own_q.join(
                 EventTag, EventTag.event_id == Event.id
+            ).filter(
+                EventTag.tag_id.in_([t.id for t in tags])
             )
             q = q.join(
                 EventTag, EventTag.event_id == Event.id
+            ).filter(
+                EventTag.tag_id.in_([t.id for t in tags])
             )
-            for tag in tags:
-                own_q= own_q.filter(
-                    EventTag.tag_id == tag.id
-                )
-                q = q.filter(
-                    EventTag.tag_id == tag.id
-                )
         events = [e.to_json() for e in own_q.all()]
         events.extend([e.to_json() for e in q.all()])
         return events
@@ -143,11 +140,9 @@ class Event(db.Model):
         if tags:
             q = q.join(
                 EventTag, EventTag.event_id == Event.id
+            ).filter(
+                EventTag.tag_id.in_([t.id for t in tags])
             )
-            for tag in tags:
-                q = q.filter(
-                    EventTag.tag_id == tag.id
-                )
         return q.all()
 
     def get_participants(self):
@@ -225,14 +220,8 @@ class Tag(db.Model):
         return t
 
     @staticmethod
-    def get_tags_list(tags: list) -> list:
-        if tags:
-            q = Tag.query
-            for tag in tags:
-                q = q.filter(Tag.title == tag.lower())
-            return q.all()
-        else:
-            return []
+    def get_tags_list(tag_titles: list) -> list:
+        return Tag.query.filter(Tag.title.in_(tag_titles)).all()
 
     def get_events(self):
         return Event.query.join(
