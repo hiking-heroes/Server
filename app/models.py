@@ -46,13 +46,18 @@ class User(UserMixin, db.Model):
         if event_type:
             own_q = own_q.filter(Event.type == event_type)
             q = q.filter(Event.type == event_type)
-        if start and end:
+        if start:
             own_q = own_q.filter(
-                Event.start > start,
+                Event.start > start
+            )
+            q = q.filter(
+                Event.start > start
+            )
+        if end:
+            own_q = own_q.filter(
                 Event.start < end
             )
             q = q.filter(
-                Event.start > start,
                 Event.start < end
             )
         if tags:
@@ -125,9 +130,12 @@ class Event(db.Model):
         )
         if event_type:
             q = q.filter(Event.type == event_type)
-        if start and end:
+        if start:
             q = q.filter(
-                Event.start > start,
+                Event.start > start
+            )
+        if end:
+            q = q.filter(
                 Event.start < end
             )
         if tags:

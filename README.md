@@ -94,8 +94,8 @@
   **?..&..** Optional args:
   ```
   & type=str                - тип ивента
-  & start=str               - datetime начала интервала. !end required
-  & end=str                 - datetime конца             !start required
+  & start=str               - datetime начала интервала
+  & end=str                 - datetime конца
   & tags=str,...            - список тегов через ","
   ```
   **{}->** Answer: *200*
@@ -210,8 +210,8 @@
   **?..&..** Optional args:
   ```
   & type=str                - тип ивента
-  & start=str               - datetime начала интервала. !end required
-  & end=str                 - datetime конца             !start required
+  & start=str               - datetime начала интервала
+  & end=str                 - datetime конца
   & tags=str,...            - список тегов через ","
   ```
   **{}->** Answer: *200*  
