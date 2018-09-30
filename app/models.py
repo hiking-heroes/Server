@@ -61,15 +61,17 @@ class User(UserMixin, db.Model):
                 Event.start < end
             )
         if tags:
+            own_q = own_q.join(
+                EventTag, EventTag.event_id == Event.id
+            )
+            q = q.join(
+                EventTag, EventTag.event_id == Event.id
+            )
             for tag in tags:
-                own_q = own_q.join(
-                    EventTag, EventTag.event_id == Event.id
-                ).filter(
+                own_q= own_q.filter(
                     EventTag.tag_id == tag.id
                 )
-                q = q.join(
-                    EventTag, EventTag.event_id == Event.id
-                ).filter(
+                q = q.filter(
                     EventTag.tag_id == tag.id
                 )
         events = [e.to_json() for e in own_q.all()]
@@ -139,10 +141,11 @@ class Event(db.Model):
                 Event.start < end
             )
         if tags:
+            q = q.join(
+                EventTag, EventTag.event_id == Event.id
+            )
             for tag in tags:
-                q = q.join(
-                    EventTag, EventTag.event_id == Event.id
-                ).filter(
+                q = q.filter(
                     EventTag.tag_id == tag.id
                 )
         return q.all()
