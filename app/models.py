@@ -60,7 +60,7 @@ class User(UserMixin, db.Model):
                 own_q = own_q.join(
                     EventTag, EventTag.event_id == Event.id
                 ).filter(
-                    EventTag.tag_id == self.id
+                    EventTag.tag_id == tag.id
                 )
                 q = q.join(
                     EventTag, EventTag.event_id == Event.id
@@ -212,6 +212,16 @@ class Tag(db.Model):
             t = Tag(title=title)
             db.session.add(t)
         return t
+
+    @staticmethod
+    def get_tags_list(tags: list) -> list:
+        if tags:
+            q = Tag.query
+            for tag in tags:
+                q = q.filter(Tag.title == tag.lower())
+            return q.all()
+        else:
+            return []
 
     def get_events(self):
         return Event.query.join(

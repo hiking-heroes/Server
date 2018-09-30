@@ -16,12 +16,7 @@ def get_events_for_square():
         return error_response(400, "Not all required arguments are passed")
 
     tags = request.args.get("tags")
-    tags = tags.split(",") if tags else None
-    if tags:
-        q = Tag.query
-        for tag in tags:
-            q = q.filter(Tag.title == tag)
-        tags = q.all()
+    tags = Tag.get_tags_list(tags.split(",") if tags else [])
 
     events = Event.get_for_square(
         lt_lat=request.args["lt_lat"],
@@ -120,7 +115,10 @@ def create_event():
         places=seats,
         owner=user
     )
-    tags = [Tag.get_or_create(tag) for tag in request.json["tags"] if tag]
+    tags = []
+    for tag in request.json["tags"]:
+        if tag:
+            tags.append(Tag.get_or_create(tag.lower()))
     for tag in tags:
         event.add_tag(tag)
 
@@ -181,12 +179,8 @@ def exit_event(eid):
 @token_auth.login_required
 def get_user_events():
     tags = request.args.get("tags")
-    tags = tags.split(",") if tags else None
-    if tags:
-        q = Tag.query
-        for tag in tags:
-            q = q.filter(Tag.title == tag)
-        tags = q.all()
+    tags = Tag.get_tags_list(tags.split(",") if tags else [])
+
     return jsonify(
         {
             "events": g.current_user.get_all_events(
