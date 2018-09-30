@@ -96,6 +96,7 @@
   & type=str                - тип ивента
   & start=str               - datetime начала интервала. !end required
   & end=str                 - datetime конца             !start required
+  & tags=str,...            - список тегов через ","
   ```
   **{}->** Answer: *200*
   ```
@@ -205,6 +206,13 @@
   {
     'Authorization': str    - token
   }
+  ```
+  **?..&..** Optional args:
+  ```
+  & type=str                - тип ивента
+  & start=str               - datetime начала интервала. !end required
+  & end=str                 - datetime конца             !start required
+  & tags=str,...            - список тегов через ","
   ```
   **{}->** Answer: *200*  
   ```

@@ -15,6 +15,14 @@ def get_events_for_square():
     if not request.args or not is_params_passed(request.args, required):
         return error_response(400, "Not all required arguments are passed")
 
+    tags = request.args.get("tags")
+    tags = tags.split(",") if tags else None
+    if tags:
+        q = Tag.query
+        for tag in tags:
+            q = q.filter(Tag.title == tag)
+        tags = q.all()
+
     events = Event.get_for_square(
         lt_lat=request.args["lt_lat"],
         lt_lng=request.args["lt_lng"],
@@ -22,7 +30,8 @@ def get_events_for_square():
         rb_lng=request.args["rb_lng"],
         event_type=request.args.get("type", None),
         start=request.args.get("start", None),
-        end=request.args.get("end", None)
+        end=request.args.get("end", None),
+        tags=tags
     )
     return jsonify({"events": [e.to_json() for e in events]})
 
@@ -171,4 +180,20 @@ def exit_event(eid):
 @api.route('/events/my', methods=['GET'])
 @token_auth.login_required
 def get_user_events():
-    return jsonify({"events": g.current_user.get_all_events()})
+    tags = request.args.get("tags")
+    tags = tags.split(",") if tags else None
+    if tags:
+        q = Tag.query
+        for tag in tags:
+            q = q.filter(Tag.title == tag)
+        tags = q.all()
+    return jsonify(
+        {
+            "events": g.current_user.get_all_events(
+                event_type=request.args.get("type"),
+                start=request.args.get("start"),
+                end=request.args.get("end"),
+                tags=tags
+            )
+        }
+    )

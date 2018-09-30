@@ -39,9 +39,36 @@ class User(UserMixin, db.Model):
     def __init__(self, **kwargs):
         super(User, self).__init__(**kwargs)
 
-    def get_all_events(self) -> list:
-        events = [e.to_json() for e in self.own_events.all()]
-        events.extend([e.to_json() for e in self.get_events()])
+    def get_all_events(self, event_type: str = None, start: str = None,
+                       end: str = None, tags: list = None) -> list:
+        own_q = self.own_events
+        q = self.get_events()
+        if event_type:
+            own_q = own_q.filter(Event.type == event_type)
+            q = q.filter(Event.type == event_type)
+        if start and end:
+            own_q = own_q.filter(
+                Event.start > start,
+                Event.start < end
+            )
+            q = q.filter(
+                Event.start > start,
+                Event.start < end
+            )
+        if tags:
+            for tag in tags:
+                own_q = own_q.join(
+                    EventTag, EventTag.event_id == Event.id
+                ).filter(
+                    EventTag.tag_id == self.id
+                )
+                q = q.join(
+                    EventTag, EventTag.event_id == Event.id
+                ).filter(
+                    EventTag.tag_id == tag.id
+                )
+        events = [e.to_json() for e in own_q.all()]
+        events.extend([e.to_json() for e in q.all()])
         return events
 
     def get_events(self):
@@ -87,8 +114,9 @@ class Event(db.Model):
                            cascade='all, delete-orphan')
 
     @staticmethod
-    def get_for_square(lt_lat, lt_lng, rb_lat, rb_lng, event_type=None,
-                       start=None, end=None):
+    def get_for_square(lt_lat: float, lt_lng: float, rb_lat: float,
+                       rb_lng: float, event_type: str = None, start: str = None,
+                       end: str = None, tags: list = None) -> list:
         q = Event.query.filter(
             Event.latitude > lt_lat,
             Event.longitude > lt_lng,
@@ -102,6 +130,13 @@ class Event(db.Model):
                 Event.start > start,
                 Event.start < end
             )
+        if tags:
+            for tag in tags:
+                q = q.join(
+                    EventTag, EventTag.event_id == Event.id
+                ).filter(
+                    EventTag.tag_id == tag.id
+                )
         return q.all()
 
     def get_participants(self):
